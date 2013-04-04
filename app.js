@@ -1,8 +1,8 @@
 var port = process.env.PORT || 8080;
-//old name: obscure-fortress-3472
+
 var mongoUri = process.env.MONGOLAB_URI || 
   process.env.MONGOHQ_URL || 
-  'mongodb://localhost/mydb'; 
+  'mongodb://localhost:27017'; 
 
 //setup express, mongo, and server vars
 var express = require("express"),
@@ -28,11 +28,13 @@ app.get('/', function(req, res){
 });
 
 app.get('/recipes', function(req,res){
-	recipedb.collection('recipe', function(err, coll){
+	mongo.Db.connect(mongoUri, function (err, db) {
+	db.collection('recipe', function(err, coll){
     coll.find({},function(err, cursor){
       cursor.toArray(function(err, arr){
         res.render("recipe_list", {recipes: arr});
       });
+    });
     });
   });
 });
@@ -40,10 +42,12 @@ app.get('/recipes', function(req,res){
 app.get("/recipe/:id", function(req, res){
   var recipe_id = req.params['id'];  
   if (recipe_id){
-    recipedb.collection('recipe', function(err, coll){
+	mongo.Db.connect(mongoUri, function (err, db) {
+    db.collection('recipe', function(err, coll){
       coll.findOne({_id:new ObjectId(recipe_id)}, function(err, recipe){
         res.render("recipe", {id: recipe_id, recipe: recipe});
       });
+    });
     });
   } else {
     res.send(404);
@@ -58,10 +62,12 @@ app.get('/newrecipe', function(req, res){
 app.get('/updaterecipe/:id', function(req, res){
 	var recipe_id = req.params['id'];  
 	if (recipe_id){
-    recipedb.collection('recipe', function(err, coll){
+	mongo.Db.connect(mongoUri, function (err, db) {
+    db.collection('recipe', function(err, coll){
       coll.findOne({_id:new ObjectId(recipe_id)}, function(err, recipe){
         res.render('update_recipe',{recipe: recipe});
       });
+    });
     });
   } else {
     res.send(404);
@@ -95,10 +101,12 @@ app.put('/updaterecipe/:id',function(req, res){
 		  ingredients: ingreds,
 		  instructions: instr
 	  }; 
-		recipedb.collection('recipe', function(err, coll){
+		mongo.Db.connect(mongoUri, function (err, db) {
+		db.collection('recipe', function(err, coll){
         coll.update({_id:ObjectId(recipe_id)},new_recipe, function(err){
 			res.redirect('/');
         });
+      });  
       });    
 });
 
@@ -123,10 +131,12 @@ app.post("/newrecipe", function(req, res){
       instructions: instr
     };    
     //console.log(new_recipe);
-    recipedb.collection('recipe', function(err, coll){
+    mongo.Db.connect(mongoUri, function (err, db) {
+    db.collection('recipe', function(err, coll){
       coll.insert(new_recipe, function(err){
         res.redirect('/');
       });
+    });
     });
   } else {
     res.send(400);
@@ -134,7 +144,8 @@ app.post("/newrecipe", function(req, res){
 });
 
 app.get('/newgroceryl', function(req, res){
-	recipedb.collection('recipe', function(err, coll){
+	mongo.Db.connect(mongoUri, function (err, db) {
+	db.collection('recipe', function(err, coll){
     coll.find({},function(err, cursor){
       cursor.toArray(function(err, arr){
 		  arr.sort(function(a,b){			  
@@ -144,6 +155,7 @@ app.get('/newgroceryl', function(req, res){
 		  });
 		res.render('new_grocerylist', {recipes:arr});
       });
+    });
     });
   });
 });
@@ -157,12 +169,14 @@ app.post('/groceryl', function(req,res){
 	for(key in req.body){
 		ids.push({_id:new ObjectId(key)});
 	}
-		recipedb.collection('recipe', function(err, coll){
+		mongo.Db.connect(mongoUri, function (err, db) {
+		db.collection('recipe', function(err, coll){
 			coll.find({$or:ids}, function(err, cursor){				
 				cursor.toArray(function(err,arr){
 					//console.log(arr);					
 					res.render('grocerylist', {recipes: arr});
 				});
+			});
 			});
 		});		
 	//console.log(recipes);	
@@ -173,10 +187,12 @@ app.post('/groceryl', function(req,res){
 app.delete("/recipe/:id", function(req, res){
   var recipe_id = req.params['id'];
   if(recipe_id){
-    recipedb.collection('recipe', function(err, coll){
+	mongo.Db.connect(mongoUri, function (err, db) {
+    db.collection('recipe', function(err, coll){
       coll.remove({_id:new ObjectId(recipe_id)}, function(err){
         res.redirect('/recipes');
       });
+    });
     });
   } else {
     res.send(404);
