@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>RecipeNation</title>
+    <link href="http://cdn.jsdelivr.net/bootstrap/2.3.0/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+    <style>
+      body {
+        margin: 0 auto;
+        width: 600px;
+      }
+ 
+      .post {
+        background: #eee;
+        border: 1px solid #ccc;
+        margin: 5px;
+        padding: 10px;
+      }
+ 
+      .add_post {
+        background: #eee;
+        border: 1px solid #ccc;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+<div class='post'>
+<h1 style='display:inline'><%= recipe.title %></h1>
+<p>Serving Size: <%= recipe.servingSize %><br/>
+   Ingredients:<br/>
+	<ul>
+<% for (i = 0; i<recipe.ingredients.length;i++){ %>	
+	<li><%= recipe.ingredients[i].item %></li>
+	<%}%>	
+	</ul><br/>
+	Instructions:<br/>
+	<ol>
+<% for (i = 0; i<recipe.instructions.length;i++){ %>	
+	<li><%= recipe.instructions[i] %></li>
+	<%}%>	
+	</ol><br/>
+
+
+</p>
+  <form method="POST" action='/recipe/<%= id %>'>
+    <input type='hidden' name='_method' value='delete' />
+    <input type='submit' value='delete recipe'/>    
+  </form>
+  <form method="GET" action='/updaterecipe/<%= id %>'>
+    <input type='hidden' name='_method' value='get' />
+    <input type='submit' value='update recipe'/>    
+  </form>  
+<a href='/'>go home</a>
+</div>
+</body>
+</html>

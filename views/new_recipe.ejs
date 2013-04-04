@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <title>RecipeNation</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <link href="http://cdn.jsdelivr.net/bootstrap/2.3.0/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+    <style>
+      body {
+        margin: 0 auto;
+        width: 600px;
+      }
+ 
+      .post {
+        background: #eee;
+        border: 1px solid #ccc;
+        margin: 5px;
+        padding: 10px;
+      }
+ 
+      .add_recipe {
+        background: #eee;
+        border: 1px solid #ccc;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+    </style>
+  <script>
+$(document).ready(function(){
+	$('#btnAdd').click(function() {
+		var num        = $('.clonedInput').length;    // how many "duplicatable" input fields we currently have
+		var newNum    = new Number(num + 1);        // the numeric ID of the new input field being added
+
+		// create the new element via clone(), and manipulate it's ID using newNum value
+		var newElem = $('#input' + num).clone().attr('id', 'input' + newNum);
+
+		// manipulate the name/id values of the input inside the new element
+		newElem.children(':first').attr('id', 'ingredient' + newNum).attr('name', 'ingredient' + newNum);		
+		newElem.children(':nth-child(2)').attr('id','category'+newNum).attr('name', 'category' + newNum);
+
+		// insert the new element after the last "duplicatable" input field
+		$('#input' + num).after(newElem);
+
+		// business rule: you can only add 20 ingredients
+		if (newNum == 20)
+			$('#btnAdd').attr('disabled','disabled');
+	});
+$('#btnAddStep').click(function() {
+		var num        = $('.clonedInputStep').length;    // how many "duplicatable" input fields we currently have
+		var newNum    = new Number(num + 1);        // the numeric ID of the new input field being added
+
+		// create the new element via clone(), and manipulate it's ID using newNum value
+		var newElem = $('#inst' + num).clone().attr('id', 'inst' + newNum);
+
+		// manipulate the name/id values of the input inside the new element
+		newElem.children(':first').attr('id', 'step' + newNum).attr('name', 'step' + newNum);		
+
+		// insert the new element after the last "duplicatable" input field
+		$('#inst' + num).after(newElem);		
+
+		// business rule: you can only add 10 Steps
+		if (newNum == 10)
+			$('#btnAddStep').attr('disabled','disabled');
+	});
+});
+  </script>
+  </head>
+
+  
+  <body>
+	<div class="add_recipe">
+		<h1>Add a new Recipe</h1>
+		<form id="recipeForm" method='POST' action='/newrecipe'>
+			<input name='title' id='title_field' placeholder='Title' /><br />
+			<input name='size' id='size_field' placeholder='Serving Size' /><br/>
+			<br/><br/>Ingredients:
+			<div id="input1" style="margin-bottom:4px;" class="clonedInput">
+				<input type="text" name="ingredient1" id="ingredient1" />
+				<select id='category1'name="category1" stlye='display:inline'>					
+				<option value="cold">cold</option>
+				<option value="meat">meat</option>
+				<option value="grains">grains</option>
+				<option value="produce">produce</option>
+				<option value="cans/jars">cans/jars</option>
+				<option value="other">other</option>
+				</select>
+			</div>
+			<div>
+				<input type="button" id="btnAdd" value="add another ingredient" />				
+			</div><br/><br/>
+			Instructions:<br/>
+			<div id="inst1" style="margin-bottom:4px;" class="clonedInputStep">
+				<input type="text" name="step1" id="step1" />
+			</div>
+			<div>
+				<input type="button" id="btnAddStep" value="add another Step" />				
+			</div>			
+			<br/><br/>
+			<input type='submit' value='Create & Submit' />
+		</form>                         
+        
+    </div>
+  </body>
+</html>
