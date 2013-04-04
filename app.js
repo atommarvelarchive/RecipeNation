@@ -1,3 +1,9 @@
+var port = process.env.PORT || 8080;
+//old name: obscure-fortress-3472
+var mongoUri = process.env.MONGOLAB_URI || 
+  process.env.MONGOHQ_URL || 
+  'mongodb://localhost/mydb'; 
+
 //setup express, mongo, and server vars
 var express = require("express"),
     app = new express();
@@ -8,7 +14,7 @@ var ObjectId = mongo.ObjectID;
 var Server = mongo.Server,
    Db = mongo.Db;
  
-var server = new Server('localhost', 27017, {auto_reconnect: true});
+var server = new Server(mongoUri, 27017, {auto_reconnect: true});
 var recipedb = new Db('recipe', server);
 
 app.set('view engine', 'ejs');
@@ -178,4 +184,4 @@ app.delete("/recipe/:id", function(req, res){
 });
 
 
-app.listen(8080);
+app.listen(port);
