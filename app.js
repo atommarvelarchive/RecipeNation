@@ -1,8 +1,8 @@
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 5000;
 
 var mongoUri = process.env.MONGOLAB_URI || 
   process.env.MONGOHQ_URL || 
-  'mongodb://localhost:27017'; 
+  'mongodb://localhost'; 
 
 //setup express, mongo, and server vars
 var express = require("express"),
