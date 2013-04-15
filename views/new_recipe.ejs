@@ -9,6 +9,8 @@
 
     <!-- Le styles -->
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
         <style>
       body {
 		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -86,8 +88,6 @@ $('#btnAddStep').click(function() {
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-  <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -99,27 +99,20 @@ $('#btnAddStep').click(function() {
           <a class="brand" href="/">Balanced Meal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>                            
-               <li class="dropdown">
-				<a class="dropdown-toggle"
-				data-toggle="dropdown"
-				href="#">
-				Recipes
-				<b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-				<li><a href="/recipes">View Recipes</a></li>
-				<li><a href="/newrecipe">New Recipe</a></li>
-				</ul>
+              <li><a href="/">Home</a></li>                 
+              <li><a href="/locator">Retail Locator</a></li>                                                     
+			  <li><a href="/recipes">View Recipes</a></li>				
               <li><a href="/newgroceryl">New Grocery List</a></li>
+              <li><a href="/resources">Resources</a></li>   
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
-    <div class="container">      
+    
        <body>
+	<div class="container">      
 	<div class="add_recipe">
 		<h1>Add a new Recipe</h1>
 		<form id="recipeForm" method='POST' action='/newrecipe'>
@@ -159,8 +152,7 @@ $('#btnAddStep').click(function() {
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	<script src="http://code.jquery.com/jquery.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
   </body>
 </html>
 

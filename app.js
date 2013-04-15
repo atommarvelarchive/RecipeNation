@@ -27,11 +27,24 @@ app.get('/', function(req, res){
 	res.render('home');	
 });
 
+app.get("/locator",function(req,res){
+	res.redirect("http://www.snapretailerlocator.com/");
+});
+
+app.get("/resources",function(req,res){
+	res.render("resources");
+});
+
 app.get('/recipes', function(req,res){
 	mongo.Db.connect(mongoUri, function (err, db) {
 	db.collection('recipe', function(err, coll){
     coll.find({},function(err, cursor){
-      cursor.toArray(function(err, arr){
+      cursor.toArray(function(err, arr){		  
+		  arr.sort(function(a,b){			  
+			 if(a.title<b.title) return -1;
+			 if(a.title===b.title) return 0;
+			 if(a.title>b.title) return 1; 
+		  });
         res.render("recipe_list", {recipes: arr});
       });
     });

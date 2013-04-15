@@ -59,19 +59,11 @@
           <a class="brand" href="/">Balanced Meal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>                            
-               <li class="dropdown">
-				<a class="dropdown-toggle"
-				data-toggle="dropdown"
-				href="#">
-				Recipes
-				<b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-				<li><a href="/recipes">View Recipes</a></li>
-				<li><a href="/newrecipe">New Recipe</a></li>
-				</ul>
+              <li><a href="/">Home</a></li>                 
+              <li><a href="/locator">Retail Locator</a></li>                                                     
+			  <li class="active"><a href="/recipes">View Recipes</a></li>				
               <li><a href="/newgroceryl">New Grocery List</a></li>
+              <li><a href="/resources">Resources</a></li>  
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -81,7 +73,7 @@
     <div class="container">
 
 	<body>
-	    <% for (i = recipes.length-1; i>=0;i--){ %>
+	    <% for (i = 0; i<recipes.length;i++){ %>
     <div class='recipe'>
       <a href='/recipe/<%= recipes[i]._id %>'><h2 style='display:inline'><%= recipes[i].title %></h2></a>
     </div>
