@@ -28,7 +28,7 @@ app.get('/', function(req, res){
 });
 
 app.get("/locator",function(req,res){
-	res.redirect("http://www.snapretailerlocator.com/");
+	res.render("map");
 });
 
 app.get("/resources",function(req,res){
