@@ -1,0 +1,53 @@
+commit 886cf5f50a5fe3952ff3e86587ba74aa940096d1
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Sun Apr 21 16:00:26 2013 -0400
+
+    Added map functionality
+
+commit cfecfabb53d80c8240ae6e620cbdc75b93f161f2
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Mon Apr 15 07:40:32 2013 -0400
+
+    woops, forgot to fix node vs nodjs
+
+commit 8b788616074d012a4e83d0e81f009be549b7dad0
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Mon Apr 15 07:38:26 2013 -0400
+
+    rough draft version complete
+
+commit 3dcf5817648cf109e3ff9762216877346e620e9e
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Thu Apr 4 15:59:03 2013 -0400
+
+    fixing procfile plsplspls
+
+commit f692948b0d3d3dd1925d040f0865934b7ca5d0a6
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Thu Apr 4 15:56:04 2013 -0400
+
+    bootstrapped
+
+commit 1a4d825156af577287d50651572408ec6cdeb6b6
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Thu Apr 4 11:41:57 2013 -0400
+
+    Trying to make mongodb work
+
+commit 85b28ba9aa980af019d0c4606bcb77ec9cc0dc99
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Thu Apr 4 11:17:06 2013 -0400
+
+    adding Procfile and setting up for heroku
+
+commit 4a7f658fae59e7308d148b7aafbdac0a4bf6245f
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Thu Apr 4 10:14:02 2013 -0400
+
+    adding local project
+
+commit 0667788c6cd2c0206c397be178a4707dbb1d4bc7
+Author: atommarvel <atom.raiff@gmail.com>
+Date:   Sun Mar 3 18:10:10 2013 -0500
+
+    First commit
