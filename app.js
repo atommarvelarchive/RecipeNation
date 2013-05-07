@@ -7,6 +7,7 @@ var mongoUri = process.env.MONGOLAB_URI ||
 //setup express, mongo, and server vars
 var express = require("express"),
     app = new express();
+    
 
 var mongo = require('mongodb');
 var ObjectId = mongo.ObjectID;
@@ -18,22 +19,31 @@ var server = new Server(mongoUri, 27017, {auto_reconnect: true});
 var recipedb = new Db('recipe', server);
 
 app.set('view engine', 'ejs');
+var fs = require('fs');
 
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+app.use(express.static(__dirname + '/views'));
+
+
+//init template data
+var header = fs.readFileSync("head.txt","utf8");
+var footer = fs.readFileSync("footer.txt","utf8");
+var navbar = fs.readFileSync("navbar.txt","utf8");
+
+
+var templateData = {	
+	head: header,
+	footer: footer,
+	navbar: navbar
+	}
+//console.log(header);
 
 // Homepage
 app.get('/', function(req, res){
-	res.render('home');	
+	res.render('home', {td:templateData});	
 });
 
-app.get("/locator",function(req,res){
-	res.render("map");
-});
-
-app.get("/resources",function(req,res){
-	res.render("resources");
-});
 
 app.get('/recipes', function(req,res){
 	mongo.Db.connect(mongoUri, function (err, db) {
@@ -45,7 +55,7 @@ app.get('/recipes', function(req,res){
 			 if(a.title===b.title) return 0;
 			 if(a.title>b.title) return 1; 
 		  });
-        res.render("recipe_list", {recipes: arr});
+        res.render("recipe_list", {recipes: arr, td:templateData});
       });
     });
     });
@@ -58,7 +68,7 @@ app.get("/recipe/:id", function(req, res){
 	mongo.Db.connect(mongoUri, function (err, db) {
     db.collection('recipe', function(err, coll){
       coll.findOne({_id:new ObjectId(recipe_id)}, function(err, recipe){
-        res.render("recipe", {id: recipe_id, recipe: recipe});
+        res.render("recipe", {id: recipe_id, recipe: recipe, td:templateData});
       });
     });
     });
@@ -68,8 +78,8 @@ app.get("/recipe/:id", function(req, res){
 });
 
 // This takes the user to a page that can be used to submit a recipe.
-app.get('/newrecipe', function(req, res){
-	res.render('new_recipe');
+app.get('/newrecipe', function(req, res){	
+	res.render('new_recipe', {td:templateData});
 });
 
 app.get('/updaterecipe/:id', function(req, res){
@@ -78,7 +88,7 @@ app.get('/updaterecipe/:id', function(req, res){
 	mongo.Db.connect(mongoUri, function (err, db) {
     db.collection('recipe', function(err, coll){
       coll.findOne({_id:new ObjectId(recipe_id)}, function(err, recipe){
-        res.render('update_recipe',{recipe: recipe});
+        res.render('update_recipe',{recipe: recipe, td:templateData});
       });
     });
     });
@@ -166,7 +176,7 @@ app.get('/newgroceryl', function(req, res){
 			 if(a.title===b.title) return 0;
 			 if(a.title>b.title) return 1; 
 		  });
-		res.render('new_grocerylist', {recipes:arr});
+		res.render('new_grocerylist', {recipes:arr, td:templateData});
       });
     });
     });
@@ -187,7 +197,7 @@ app.post('/groceryl', function(req,res){
 			coll.find({$or:ids}, function(err, cursor){				
 				cursor.toArray(function(err,arr){
 					//console.log(arr);					
-					res.render('grocerylist', {recipes: arr});
+					res.render('grocerylist', {recipes: arr, td:templateData});
 				});
 			});
 			});
