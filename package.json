@@ -5,6 +5,7 @@
   "dependencies": {
     "express": "3.x",
     "ejs":"*",
-    "mongodb":"1.x"
+    "mongodb":"1.x",
+    "xml-writer":"*"
   }
 }

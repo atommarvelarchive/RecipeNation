@@ -20,6 +20,7 @@ var recipedb = new Db('recipe', server);
 
 app.set('view engine', 'ejs');
 var fs = require('fs');
+var XMLWriter = require('xml-writer');
 
 app.use(express.bodyParser());
 app.use(express.methodOverride());
@@ -42,6 +43,32 @@ var templateData = {
 // Homepage
 app.get('/', function(req, res){
 	res.render('home', {td:templateData});	
+});
+
+app.get("/xml/recipes", function(req,res){
+	console.log("request recieved");
+	mongo.Db.connect(mongoUri, function (err, db) {
+	db.collection('recipe', function(err, coll){
+    coll.find({},function(err, cursor){
+      cursor.toArray(function(err, arr){		  
+		  arr.sort(function(a,b){			  
+			 if(a.title<b.title) return -1;
+			 if(a.title===b.title) return 0;
+			 if(a.title>b.title) return 1; 
+		  });
+		console.log(arr);
+		xw = new XMLWriter;
+		xw.startElement('root');
+			for(index in arr) {								
+				xw.startElement('recipe').writeAttribute('_id', arr[index]._id.toString()).text(arr[index].title);							
+				xw.endElement('recipe');
+			}
+		xw.endElement('root');
+        res.render("recipe_list_xml", {recipes: xw.toString()});
+      });
+    });
+    });
+  });
 });
 
 
