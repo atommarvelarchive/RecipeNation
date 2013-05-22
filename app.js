@@ -41,7 +41,7 @@ var templateData = {
 //console.log(header);
 
 // Homepage
-app.get('/', function(req, res){
+app.get('/', function(req, res){	
 	res.render('home', {td:templateData});	
 });
 
@@ -56,14 +56,16 @@ app.get("/xml/recipes", function(req,res){
 			 if(a.title===b.title) return 0;
 			 if(a.title>b.title) return 1; 
 		  });
-		console.log(arr);
-		xw = new XMLWriter;
-		xw.startElement('root');
+		//console.log(arr);
+		xw = new XMLWriter;		
+		xw.startDocument();		
+		xw.startElement('root').writeAttribute("xmlns:h", "com.atommarvel.RecipeNation");		
 			for(index in arr) {								
-				xw.startElement('recipe').writeAttribute('_id', arr[index]._id.toString()).text(arr[index].title);							
+				xw.startElement('recipe').writeAttribute('_id', arr[index]._id.toString()).writeAttribute("title", arr[index].title.toString());							
 				xw.endElement('recipe');
 			}
 		xw.endElement('root');
+		xw.endDocument();
         res.render("recipe_list_xml", {recipes: xw.toString()});
       });
     });
