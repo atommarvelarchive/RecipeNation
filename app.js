@@ -45,6 +45,23 @@ app.get('/', function(req, res){
 	res.render('home', {td:templateData});	
 });
 
+app.get("/xml/recipe/:id", function(req, res){
+  var recipe_id = req.params['id'];  
+  if (recipe_id){
+	mongo.Db.connect(mongoUri, function (err, db) {
+    db.collection('recipe', function(err, coll){
+      coll.findOne({_id:new ObjectId(recipe_id)}, function(err, recipe){	
+		
+		xw = recipesToXML([recipe], true, true);
+        res.render("recipe_xml", {recipe: xw.toString()});
+      });
+    });
+    });
+  } else {
+    res.send(404);
+  }
+});
+
 app.get("/xml/recipes", function(req,res){
 	console.log("request recieved");
 	mongo.Db.connect(mongoUri, function (err, db) {
@@ -57,21 +74,47 @@ app.get("/xml/recipes", function(req,res){
 			 if(a.title>b.title) return 1; 
 		  });
 		//console.log(arr);
-		xw = new XMLWriter;		
-		xw.startDocument();		
-		xw.startElement('root').writeAttribute("xmlns:h", "com.atommarvel.RecipeNation");		
-			for(index in arr) {								
-				xw.startElement('recipe').writeAttribute('_id', arr[index]._id.toString()).writeAttribute("title", arr[index].title.toString());							
-				xw.endElement('recipe');
-			}
-		xw.endElement('root');
-		xw.endDocument();
+		xw = recipesToXML(arr, false, false);
         res.render("recipe_list_xml", {recipes: xw.toString()});
       });
     });
     });
   });
 });
+
+function recipesToXML(arr, ingredients, instructions) {	
+	var xw = new XMLWriter;		
+	xw.startDocument();		
+	xw.startElement('root').writeAttribute("xmlns:h", "com.atommarvel.RecipeNation");		
+		for(index in arr) {										
+			xw.startElement("recipe").writeAttribute("_id", 
+				arr[index]._id.toString()).writeAttribute("title",
+				arr[index].title.toString()).writeAttribute("servingSize",
+				arr[index].servingSize.toString());		
+			if(ingredients) {								
+				xw.startElement("ingredients");
+				for (ingred in arr[index].ingredients){
+					xw.startElement("ingredient").writeAttribute("item", 
+						arr[index].ingredients[ingred].item).writeAttribute("category", 
+						arr[index].ingredients[ingred].category);
+					xw.endElement("ingredient");
+				}
+				xw.endElement("ingredients");				
+			}
+			if(instructions) {
+				xw.startElement("instructions");
+				for (step in arr[index].instructions){
+					xw.startElement("step").writeAttribute("value", arr[index].instructions[step]);
+					xw.endElement("step");
+				}
+				xw.endElement("instructions");
+			}
+			xw.endElement('recipe');
+		}
+	xw.endElement('root');
+	xw.endDocument();
+	return xw;
+}
 
 
 app.get('/recipes', function(req,res){
@@ -214,7 +257,7 @@ app.get('/newgroceryl', function(req, res){
 
 app.post('/groceryl', function(req,res){
 	//console.log(Object.keys(req.body).length);
-	//console.log(req.body);
+	console.log(req.body);
 	//create array of recipes
 	var recipes = new Array();	
 	var ids = new Array();
