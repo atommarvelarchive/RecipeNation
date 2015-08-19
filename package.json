@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "a node project for stuff",
   "dependencies": {
-    "express": "3.x",
-    "ejs":"*",
-    "mongodb":"1.x",
-    "xml-writer":"*"
+    "express": "3.1.0",
+    "ejs":"0.8.3",
+    "mongodb":"1.2.13",
+    "xml-writer":"1.2.4"
   }
 }
